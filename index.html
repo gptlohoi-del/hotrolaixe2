@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kinh Chánh Tinh Tấn</title>
+    <link rel="manifest" href="./manifest.json">
+    <style>
+        :root {
+            --main-eng-size: 1.3em;
+            --main-ipa-size: 1.0em;
+            --main-vn-size: 1.05em;
+            --list-eng-size: 1.0em;
+            --list-ipa-size: 0.9em;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: Arial, sans-serif;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+        }
+
+        .container {
+            background-color: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+        }
+
+        #appTitle {
+            color: #2c3e50;
+            margin: 6px 0;
+            font-size: clamp(1.05rem, 4.2vw, 1.4rem);
+            line-height: 1.3;
+            flex: 1;
+            min-width: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .btn-toggle-local {
+            background-color: #e9ecef;
+            color: #333;
+            border: 1px solid #ced4da;
+            padding: 6px 10px;
+            font-size: 0.85em;
+            border-radius: 4px;
+            cursor: pointer;
+            min-width: unset !important;
+            flex: none !important;
+            display: none;
+            white-space: nowrap;
+        }
+        .btn-toggle-local:hover { background-color: #dde2e6; }
+
+        /* --- KHUNG CHỌN BÀI NGHE --- */
+        .playlist-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #eef6ff;
+            border: 1px solid #b8daff;
+            padding: 8px 10px;
+            border-radius: 6px;
+            margin: 8px 0 12px 0;
+            width: 100%;
+            max-width: 100%;
+        }
+        .playlist-bar label {
+            font-weight: bold;
+            color: #004085;
+            font-size: 0.95em;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .playlist-select {
+            flex: 1;
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 7px 8px;
+            font-size: 0.95em;
+            font-weight: bold;
+            color: #2c3e50;
+            border: 1px solid #80bdff;
+            border-radius: 5px;
+            background-color: #fff;
+            outline: none;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- TRÌNH PHÁT NHẠC & THANH TỐC ĐỘ / TẢI XUỐNG --- */
+        .player-wrapper {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+        audio {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 8px;
+            outline: none;
+            display: block;
+        }
+        .custom-media-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .speed-dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .btn-media-tool {
+            background-color: #fff !important;
+            color: #2c3e50 !important;
+            border: 1px solid #ced4da !important;
+            padding: 6px 10px !important;
+            font-size: 0.88em !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            min-width: unset !important;
+            flex: none !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .btn-media-tool:hover {
+            background-color: #e9ecef !important;
+        }
+        .speed-menu-list {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            min-width: 145px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            z-index: 9000;
+            overflow: hidden;
+        }
+        .speed-menu-list.show {
+            display: block;
+        }
+        .speed-option {
+            padding: 8px 12px;
+            font-size: 0.92em;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .speed-option:last-child { border-bottom: none; }
+        .speed-option:hover { background-color: #e3f2fd; }
+        .speed-option.active {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* --- KHUNG HIỂN THỊ PHỤ ĐỀ CHÍNH --- */
+        .subtitle-display {
+            text-align: center;
+            min-height: 4.5em;
+            margin: 12px 0;
+            padding: 14px 10px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            text-shadow: 1px 1px 2px black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .subtitle-eng {
+            font-size: var(--main-eng-size);
+            line-height: 1.35;
+            font-weight: bold;
+            width: 100%;
+        }
+        .subtitle-ipa {
+            font-size: var(--main-ipa-size);
+            line-height: 1.35;
+            color: #82e0aa;
+            font-family: "Lucida Sans Unicode", "Segoe UI", Arial, sans-serif;
+            font-weight: normal;
+            width: 100%;
+        }
+        .subtitle-vn {
+            font-size: var(--main-vn-size);
+            line-height: 1.35;
+            color: #ecf0f1;
+            font-weight: normal;
+            width: 100%;
+        }
+
+        .settings-panel {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #dee2e6;
+            width: 100%;
+        }
+        .settings-panel h3 { margin-top: 0; margin-bottom: 12px; color: #333; font-size: 1.05em; }
+        
+        /* --- KHUNG DANH SÁCH CHỌN CÂU --- */
+        .sentences-list {
+            max-height: 450px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 4px;
+            background: #fff;
+            width: 100%;
+        }
+        .sentence-item {
+            padding: 8px 4px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+            line-height: 1.45;
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+        }
+        .sentence-item:hover { background-color: #f0f0f0; }
+        
+        .sentence-item.current {
+            border-left: 4px solid #007bff;
+            font-weight: bold;
+            background-color: #e3f2fd;
+        }
+        .sentence-item.selected { background-color: #fff3cd; }
+        .sentence-item.selected.current { background-color: #ffe8a1; }
+
+        .sentence-checkbox {
+            margin-right: 6px;
+            margin-top: 4px;
+            transform: scale(1.25);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .sentence-number {
+            font-weight: bold;
+            color: #555;
+            margin-right: 4px;
+            min-width: 22px;
+            font-size: var(--list-eng-size);
+            flex-shrink: 0;
+        }
+        .sentence-text {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .sentence-eng-line {
+            font-size: var(--list-eng-size);
+        }
+        .sentence-ipa {
+            color: #0d6efd;
+            font-size: var(--list-ipa-size);
+            font-family: "Lucida Sans Unicode", "Segoe UI", Arial, sans-serif;
+            font-weight: normal;
+            margin-top: 2px;
+        }
+        .time-badge {
+            color: #888;
+            font-size: 0.82em;
+            font-family: monospace;
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 4px;
+            display: inline-block;
+            font-weight: normal;
+        }
+        
+        /* --- KHUNG UPLOAD THƯ MỤC DÀNH CHO PC --- */
+        .local-fallback {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 0.92em;
+            border-radius: 4px;
+            display: none;
+            width: 100%;
+        }
+        .local-folder-box {
+            background: #fff;
+            border: 2px dashed #007bff;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .btn-folder-load {
+            background-color: #28a745 !important;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            max-width: 100%;
+        }
+        .btn-folder-load:hover { background-color: #218838 !important; }
+        .local-status { font-size: 0.9em; color: #155724; margin-top: 6px; font-weight: bold; word-break: break-word; }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        button {
+            padding: 11px 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.98em;
+            transition: background 0.2s;
+            flex: 1 1 140px;
+            max-width: 100%;
+        }
+        button:hover { background-color: #0056b3; }
+        button.active { background-color: #dc3545 !important; }
+        .btn-secondary { background-color: #6c757d; flex: 0 1 auto; }
+        .btn-secondary:hover { background-color: #5a6268; }
+
+        /* --- NÚT FLOAT ICON HOA SEN CỐ ĐỊNH GÓC PHẢI DƯỚI MÀN HÌNH --- */
+        .fab-doc-btn {
+            position: fixed !important;
+            bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+            right: 14px !important;
+            left: auto !important;
+            width: 50px !important;
+            height: 50px !important;
+            min-width: unset !important;
+            flex: none !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            background-color: #007bff;
+            color: #fff;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99999;
+            transition: transform 0.15s, background-color 0.2s;
+            touch-action: manipulation;
+        }
+        .fab-doc-btn:active { transform: scale(0.92); }
+        .fab-doc-btn svg { width: 28px; height: 28px; }
+        .fab-badge {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            background-color: #dc3545;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            min-width: 19px;
+            height: 19px;
+            padding: 0 4px;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* --- MODAL ĐA NĂNG: CHỌN SỐ CÂU & SETTING --- */
+        .range-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 100000;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 12px 8px;
+            overflow-y: auto;
+        }
+        .range-modal {
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            margin-top: 8px;
+        }
+        .modal-mode-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 8px;
+        }
+        .modal-tab-btn {
+            flex: 1;
+            min-width: unset !important;
+            padding: 9px 6px !important;
+            font-size: 0.95em !important;
+            border-radius: 6px !important;
+            background-color: #f1f3f5 !important;
+            color: #495057 !important;
+            border: 1px solid #ced4da !important;
+        }
+        .modal-tab-btn.active-tab {
+            background-color: #007bff !important;
+            color: #fff !important;
+            border-color: #007bff !important;
+        }
+
+        .range-modal h4 {
+            margin: 0 0 8px 0;
+            color: #2c3e50;
+            font-size: 1.02em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .range-modal p { margin: 0 0 10px 0; font-size: 0.88em; color: #555; line-height: 1.4; }
+        .range-input-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+            outline: none;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .quick-char-bar { display: flex; gap: 6px; margin-bottom: 12px; }
+        .quick-char-btn {
+            flex: 1;
+            min-width: unset !important;
+            padding: 8px 4px !important;
+            font-size: 0.9em !important;
+            background-color: #e9ecef !important;
+            color: #2c3e50 !important;
+            border: 1px solid #ced4da !important;
+            border-radius: 5px !important;
+        }
+        .range-modal-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .range-modal-actions button { min-width: unset !important; padding: 10px 8px !important; font-size: 0.92em !important; flex: 1; }
+        .btn-apply-loop { background-color: #28a745 !important; }
+        .btn-close-modal { background-color: #6c757d !important; flex: 0.6 !important; }
+
+        /* --- GIAO DIỆN CHỈNH CỠ CHỮ TRONG SETTING KÈM NÚT - / + --- */
+        .setting-group {
+            background: #f8f9fa;
+            border: 1px solid #e2e6ea;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .setting-group-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 0.92em;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 4px;
+        }
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            gap: 6px;
+        }
+        .setting-row:last-child { margin-bottom: 0; }
+        .setting-label {
+            font-size: 0.86em;
+            color: #333;
+            flex: 1;
+            min-width: 75px;
+        }
+        .setting-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-step-font {
+            width: 30px !important;
+            height: 30px !important;
+            min-width: 30px !important;
+            flex: none !important;
+            padding: 0 !important;
+            font-size: 1.15em !important;
+            line-height: 1 !important;
+            border-radius: 5px !important;
+            background-color: #e9ecef !important;
+            color: #2c3e50 !important;
+            border: 1px solid #ced4da !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .btn-step-font:active {
+            background-color: #007bff !important;
+            color: #fff !important;
+        }
+        .setting-slider {
+            width: 85px;
+            cursor: pointer;
+            margin: 0;
+        }
+        .setting-val {
+            font-size: 0.82em;
+            font-weight: bold;
+            color: #007bff;
+            min-width: 40px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-bar">
+            <h2 id="appTitle">Kinh Chánh Tinh Tấn</h2>
+            <button type="button" class="btn-toggle-local" id="btnToggleLocal" onclick="toggleLocalPanel()" title="Bật/tắt khung nạp thư mục trên PC">📂 Nạp Thư Mục PC</button>
+        </div>
+
+        <div class="local-fallback" id="localFallback" style="display:none;">
+            <b>💻 Chế độ chạy trên PC:</b> Chọn thư mục chứa các cặp file <code>.mp3</code>, <code>.srt</code> / <code>.txt</code> cùng tên và file <code>IPA.txt</code> dùng chung:
+            <div class="local-folder-box" id="dropZone">
+                <label class="btn-folder-load">
+                    📂 Chọn Thư Mục Chứa Các File MP3 & SRT/TXT
+                    <input type="file" id="folderUpload" webkitdirectory directory multiple style="display:none;">
+                </label>
+                <div style="font-size: 0.85em; color: #555;">
+                    Hoặc bôi đen và <b>kéo & thả</b> tất cả các file (<code>.mp3</code>, <code>.srt</code>, <code>.txt</code>) vào khung này.
+                </div>
+                <div class="local-status" id="localLoadStatus"></div>
+            </div>
+        </div>
+
+        <div class="playlist-bar">
+            <label for="trackSelector">🎵 Bài:</label>
+            <select id="trackSelector" class="playlist-select" onchange="handleTrackChange(this.value)">
+                <option value="">-- Đang quét danh sách bài... --</option>
+            </select>
+        </div>
+
+        <div class="player-wrapper">
+            <audio id="myMedia" controls controlsList="nodownload">
+                Trình duyệt không hỗ trợ thẻ audio.
+            </audio>
+            <div class="custom-media-bar">
+                <div class="speed-dropdown-wrapper">
+                    <button type="button" class="btn-media-tool" id="btnSpeedToggle" onclick="toggleSpeedMenu(event)">
+                        Tốc độ: <span id="currentSpeedText">1.0x</span> ▼
+                    </button>
+                    <div class="speed-menu-list" id="speedMenuList">
+                        <div class="speed-option" onclick="setPlaybackSpeed(0.5)"><span>0.5x (Rất chậm)</span></div>
+                        <div class="speed-option" onclick="setPlaybackSpeed(0.75)"><span>0.75x (Chậm)</span></div>
+                        <div class="speed-option" onclick="setPlaybackSpeed(0.9)"><span>0.9x (Hơi chậm)</span></div>
+                        <div class="speed-option active" onclick="setPlaybackSpeed(1.0)"><span>1.0x (Chuẩn)</span></div>
+                        <div class="speed-option" onclick="setPlaybackSpeed(1.25)"><span>1.25x (Nhanh)</span></div>
+                        <div class="speed-option" onclick="setPlaybackSpeed(1.5)"><span>1.5x (Rất nhanh)</span></div>
+                    </div>
+                </div>
+                <a id="btnDownloadMp3" href="#" download class="btn-media-tool">
+                    Tải MP3
+                </a>
+            </div>
+        </div>
+
+        <div class="subtitle-display" id="currentSubtitle">
+            <div class="subtitle-eng" id="mainSubEng">Đang tải dữ liệu...</div>
+            <div class="subtitle-ipa" id="mainSubIpa"></div>
+            <div class="subtitle-vn" id="mainSubVn"></div>
+        </div>
+
+        <div class="settings-panel">
+            <h3>🔄 1. Lặp đoạn AB tự do</h3>
+            <button id="btnAB" onclick="handleABClick()" style="width: 100%;">
+                [ A-B ] Bấm vào đây để đặt mốc A
+            </button>
+        </div>
+
+        <div class="settings-panel">
+            <h3>📑 2. Lặp Danh Sách Câu </h3>
+            <p style="margin-top:0; color:#555; font-size:0.92em;">Tích chọn một hoặc nhiều câu bên dưới. Hệ thống sẽ liên tục lặp lại các câu bạn đã chọn.</p>
+            <div class="controls">
+                <button id="btnToggleLoop" onclick="toggleSentenceLoop()">🔄 Bắt đầu lặp</button>
+                <button class="btn-secondary" onclick="clearSelection()">Xóa tất cả</button>
+            </div>
+            
+            <div class="sentences-list" id="sentencesList"></div>
+        </div>
+    </div>
+
+    <button class="fab-doc-btn" id="fabQuickSelect" onclick="openRangeModal()" title="Chọn câu & Cài đặt cỡ chữ">
+        <span class="fab-badge" id="fabBadge">0</span>
+        <svg viewBox="0 0 512 512">
+            <path d="M256,32C192,128,128,192,128,288a128,128,0,0,0,256,0C384,192,320,128,256,32Z" fill="#ffb7c5"/>
+            <path d="M256,96C200,176,160,224,160,300a96,96,0,0,0,192,0C352,224,312,176,256,96Z" fill="#ff8da1"/>
+            <path d="M256,480c-70.7,0-128-21.5-128-48s57.3-48,128-48,128,21.5,128,48S326.7,480,256,480Z" fill="#e0c068"/>
+            <path d="M128,320c-40,0-80,20-96,64,32,48,80,64,128,64a250.2,250.2,0,0,1-32-128Z" fill="#ffb7c5"/>
+            <path d="M384,320c40,0,80,20,96,64-32,48-80,64-128,64a250.2,250.2,0,0,0,32-128Z" fill="#ffb7c5"/>
+        </svg>
+    </button>
+
+    <div class="range-modal-overlay" id="rangeModalOverlay" onclick="handleOverlayClick(event)">
+        <div class="range-modal">
+            <div class="modal-mode-tabs">
+                <button type="button" class="modal-tab-btn active-tab" id="tabBtnRange" onclick="switchModalTab('range')">
+                    📄 Chọn số câu
+                </button>
+                <button type="button" class="modal-tab-btn" id="tabBtnSetting" onclick="switchModalTab('setting')">
+                    ⚙️ Setting
+                </button>
+            </div>
+
+            <div id="modalSectionRange">
+                <h4>
+                    <span>📄 Chọn nhanh câu theo số</span>
+                    <span id="totalSentenceHint" style="font-size: 0.85em; color: #007bff;"></span>
+                </h4>
+                <p>Nhập câu hoặc khoảng câu (VD: <b>5-10,13,15,20-25</b> hoặc <b>*</b>).</p>
+                <input type="tel" inputmode="tel" id="rangeInput" class="range-input-box" placeholder="VD: 5-10,13 hoặc *" autocomplete="off">
+                
+                <div class="quick-char-bar">
+                    <button type="button" class="quick-char-btn" onclick="insertQuickChar('-')"><b>-</b> (Đến)</button>
+                    <button type="button" class="quick-char-btn" onclick="insertQuickChar(',')"><b>,</b> (Phẩy)</button>
+                    <button type="button" class="quick-char-btn" onclick="insertQuickChar('*')"><b>*</b> (Tất cả)</button>
+                    <button type="button" class="quick-char-btn" onclick="clearRangeInput()">Xóa ô</button>
+                </div>
+
+                <div class="range-modal-actions">
+                    <button type="button" onclick="applyRangeSelection(false)">✅ Chọn</button>
+                    <button type="button" class="btn-apply-loop" onclick="applyRangeSelection(true)">🔄 Chọn & Lặp</button>
+                    <button type="button" class="btn-close-modal" onclick="closeRangeModal()">Đóng</button>
+                </div>
+            </div>
+
+            <div id="modalSectionSetting" style="display: none;">
+                <div class="setting-group">
+                    <div class="setting-group-title">📺 Khung phụ đề chính (Khi chạy MP3)</div>
+                    <div class="setting-row">
+                        <span class="setting-label">Tiếng Anh:</span>
+                        <div class="setting-controls">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderMainEng', -0.05)">-</button>
+                            <input type="range" class="setting-slider" id="sliderMainEng" min="0.8" max="2.5" step="0.05" oninput="updateFontSizeSetting()">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderMainEng', 0.05)">+</button>
+                            <span class="setting-val" id="valMainEng">1.30em</span>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">Phiên âm IPA:</span>
+                        <div class="setting-controls">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderMainIpa', -0.05)">-</button>
+                            <input type="range" class="setting-slider" id="sliderMainIpa" min="0.7" max="2.2" step="0.05" oninput="updateFontSizeSetting()">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderMainIpa', 0.05)">+</button>
+                            <span class="setting-val" id="valMainIpa">1.00em</span>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">Tiếng Việt:</span>
+                        <div class="setting-controls">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderMainVn', -0.05)">-</button>
+                            <input type="range" class="setting-slider" id="sliderMainVn" min="0.7" max="2.2" step="0.05" oninput="updateFontSizeSetting()">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderMainVn', 0.05)">+</button>
+                            <span class="setting-val" id="valMainVn">1.05em</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <div class="setting-group-title">📑 Khung danh sách chọn câu</div>
+                    <div class="setting-row">
+                        <span class="setting-label">Tiếng Anh:</span>
+                        <div class="setting-controls">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderListEng', -0.05)">-</button>
+                            <input type="range" class="setting-slider" id="sliderListEng" min="0.75" max="2.0" step="0.05" oninput="updateFontSizeSetting()">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderListEng', 0.05)">+</button>
+                            <span class="setting-val" id="valListEng">1.00em</span>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">Phiên âm IPA:</span>
+                        <div class="setting-controls">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderListIpa', -0.05)">-</button>
+                            <input type="range" class="setting-slider" id="sliderListIpa" min="0.65" max="1.8" step="0.05" oninput="updateFontSizeSetting()">
+                            <button type="button" class="btn-step-font" onclick="stepFontSize('sliderListIpa', 0.05)">+</button>
+                            <span class="setting-val" id="valListIpa">0.90em</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="range-modal-actions">
+                    <button type="button" class="btn-secondary" onclick="autoFitFontForDevice()">📱 Tự vừa màn hình</button>
+                    <button type="button" class="btn-apply-loop" onclick="closeRangeModal()">✅ Xong</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const media = document.getElementById('myMedia');
+        const mainSubEng = document.getElementById('mainSubEng');
+        const mainSubIpa = document.getElementById('mainSubIpa');
+        const mainSubVn = document.getElementById('mainSubVn');
+        const sentencesListDiv = document.getElementById('sentencesList');
+        const localFallback = document.getElementById('localFallback');
+        const btnToggleLocal = document.getElementById('btnToggleLocal');
+        const localLoadStatus = document.getElementById('localLoadStatus');
+        const trackSelector = document.getElementById('trackSelector');
+        const btnDownloadMp3 = document.getElementById('btnDownloadMp3');
+        const rangeModalOverlay = document.getElementById('rangeModalOverlay');
+        const rangeInput = document.getElementById('rangeInput');
+        const fabBadge = document.getElementById('fabBadge');
+        const totalSentenceHint = document.getElementById('totalSentenceHint');
+        
+        const ipaDict = {};
+        let availableTracks = [];
+        let sentences = [];
+        let currentSentenceIndex = -1;
+        
+        let abState = 0; let loopA = 0; let loopB = 0; let isABLoopMode = false;
+        let selectedSentences = []; let isSentenceLoopMode = false;
+
+        function isRunningOnPC() {
+            return false;
+        }
+
+        function toggleLocalPanel() {
+            if (!localFallback) return;
+            localFallback.style.display = (localFallback.style.display === 'none' || !localFallback.style.display) ? 'block' : 'none';
+        }
+
+        function toggleSpeedMenu(e) {
+            e.stopPropagation();
+            document.getElementById('speedMenuList').classList.toggle('show');
+        }
+
+        function setPlaybackSpeed(rate) {
+            media.playbackRate = rate;
+            document.getElementById('currentSpeedText').innerText = rate + 'x';
+            document.querySelectorAll('.speed-option').forEach(opt => {
+                opt.classList.toggle('active', opt.innerText.startsWith(rate + 'x'));
+            });
+            document.getElementById('speedMenuList').classList.remove('show');
+        }
+
+        document.addEventListener('click', () => {
+            const menu = document.getElementById('speedMenuList');
+            if (menu) menu.classList.remove('show');
+        });
+
+        function getDeviceDefaultFontSizes() {
+            const w = window.innerWidth || 375;
+            if (w <= 420) {
+                return { mainEng: 1.15, mainIpa: 0.92, mainVn: 0.98, listEng: 0.95, listIpa: 0.85 };
+            } else if (w <= 768) {
+                return { mainEng: 1.25, mainIpa: 1.00, mainVn: 1.05, listEng: 1.00, listIpa: 0.90 };
+            }
+            return { mainEng: 1.40, mainIpa: 1.05, mainVn: 1.10, listEng: 1.05, listIpa: 0.95 };
+        }
+
+        function loadSavedFontSizeSettings() {
+            let saved = null;
+            try {
+                const raw = localStorage.getItem('kinh_font_settings');
+                if (raw) saved = JSON.parse(raw);
+            } catch (e) {}
+
+            const cfg = saved ? { ...getDeviceDefaultFontSizes(), ...saved } : getDeviceDefaultFontSizes();
+            document.getElementById('sliderMainEng').value = cfg.mainEng;
+            document.getElementById('sliderMainIpa').value = cfg.mainIpa;
+            document.getElementById('sliderMainVn').value = cfg.mainVn;
+            document.getElementById('sliderListEng').value = cfg.listEng;
+            document.getElementById('sliderListIpa').value = cfg.listIpa;
+            applyFontSizeCSS(cfg);
+        }
+
+        function applyFontSizeCSS(cfg) {
+            const root = document.documentElement;
+            root.style.setProperty('--main-eng-size', cfg.mainEng + 'em');
+            root.style.setProperty('--main-ipa-size', cfg.mainIpa + 'em');
+            root.style.setProperty('--main-vn-size', cfg.mainVn + 'em');
+            root.style.setProperty('--list-eng-size', cfg.listEng + 'em');
+            root.style.setProperty('--list-ipa-size', cfg.listIpa + 'em');
+
+            document.getElementById('valMainEng').innerText = Number(cfg.mainEng).toFixed(2) + 'em';
+            document.getElementById('valMainIpa').innerText = Number(cfg.mainIpa).toFixed(2) + 'em';
+            document.getElementById('valMainVn').innerText = Number(cfg.mainVn).toFixed(2) + 'em';
+            document.getElementById('valListEng').innerText = Number(cfg.listEng).toFixed(2) + 'em';
+            document.getElementById('valListIpa').innerText = Number(cfg.listIpa).toFixed(2) + 'em';
+        }
+
+        function stepFontSize(sliderId, delta) {
+            const slider = document.getElementById(sliderId);
+            if (!slider) return;
+            const min = parseFloat(slider.min);
+            const max = parseFloat(slider.max);
+            let val = parseFloat(slider.value) + delta;
+            val = Math.round(val * 100) / 100;
+            val = Math.max(min, Math.min(max, val));
+            slider.value = val;
+            updateFontSizeSetting();
+        }
+
+        function updateFontSizeSetting() {
+            const cfg = {
+                mainEng: parseFloat(document.getElementById('sliderMainEng').value),
+                mainIpa: parseFloat(document.getElementById('sliderMainIpa').value),
+                mainVn: parseFloat(document.getElementById('sliderMainVn').value),
+                listEng: parseFloat(document.getElementById('sliderListEng').value),
+                listIpa: parseFloat(document.getElementById('sliderListIpa').value)
+            };
+            applyFontSizeCSS(cfg);
+            try {
+                localStorage.setItem('kinh_font_settings', JSON.stringify(cfg));
+            } catch (e) {}
+        }
+
+        function autoFitFontForDevice() {
+            try { localStorage.removeItem('kinh_font_settings'); } catch (e) {}
+            loadSavedFontSizeSettings();
+        }
+
+        function switchModalTab(mode) {
+            const isRange = (mode === 'range');
+            document.getElementById('modalSectionRange').style.display = isRange ? 'block' : 'none';
+            document.getElementById('modalSectionSetting').style.display = isRange ? 'none' : 'block';
+            document.getElementById('tabBtnRange').classList.toggle('active-tab', isRange);
+            document.getElementById('tabBtnSetting').classList.toggle('active-tab', !isRange);
+            if (isRange) {
+                setTimeout(() => { rangeInput.focus(); rangeInput.select(); }, 50);
+            }
+        }
+
+        function convertSentenceToIPA(text) {
+            if (!text) return "";
+            return text.replace(/[a-zA-Z]+/g, (word) => {
+                const lower = word.toLowerCase();
+                return ipaDict[lower] !== undefined ? ipaDict[lower] : word;
+            });
+        }
+
+        function parseIPAData(ipaText) {
+            const lines = ipaText.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+            for (let i = 0; i < lines.length; i += 2) {
+                if (i + 1 < lines.length) {
+                    ipaDict[lines[i].toLowerCase()] = lines[i + 1];
+                }
+            }
+            if (sentences.length > 0) {
+                sentences.forEach(s => { s.ipa = convertSentenceToIPA(s.text); });
+                renderSentencesList();
+                if (currentSentenceIndex >= 0 && sentences[currentSentenceIndex]) {
+                    const cur = sentences[currentSentenceIndex];
+                    updateMainSubtitle(cur.text, cur.ipa, cur.vnText);
+                }
+            }
+        }
+
+        function updateMainSubtitle(engText, ipaText, vnText) {
+            mainSubEng.innerHTML = engText || "";
+            if (ipaText) {
+                mainSubIpa.innerText = `/${ipaText}/`;
+                mainSubIpa.style.display = 'block';
+            } else {
+                mainSubIpa.innerText = "";
+                mainSubIpa.style.display = 'none';
+            }
+            if (vnText && vnText.trim().length > 0) {
+                mainSubVn.innerText = vnText.trim();
+                mainSubVn.style.display = 'block';
+            } else {
+                mainSubVn.innerText = "";
+                mainSubVn.style.display = 'none';
+            }
+        }
+
+        // --- HÀM CHUẨN HÓA TÊN FILE ĐỂ SO KHỚP MỌI CẶP FILE MP3 & SRT/TXT TRÙNG TÊN ---
+        function getBaseName(filename) {
+            return (filename || "").replace(/\.[^/.]+$/, "").trim();
+        }
+
+        function normalizeFileKey(filename) {
+            return getBaseName(filename)
+                .normalize('NFC')
+                .toLowerCase()
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function formatDisplayTitle(rawTitle) {
+            return (rawTitle || "").normalize('NFC').replace(/_/g, ' ');
+        }
+
+        function renderTrackSelector() {
+            trackSelector.innerHTML = '';
+            if (availableTracks.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = "";
+                opt.innerText = "-- Không tìm thấy cặp file MP3 & SRT/TXT nào --";
+                trackSelector.appendChild(opt);
+                return;
+            }
+            availableTracks.forEach((t, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.innerText = `${idx + 1}. ${formatDisplayTitle(t.title)}`;
+                trackSelector.appendChild(opt);
+            });
+        }
+
+        async function handleTrackChange(trackIdxStr) {
+            const idx = parseInt(trackIdxStr, 10);
+            if (isNaN(idx) || !availableTracks[idx]) return;
+            const track = availableTracks[idx];
+
+            resetAB();
+            stopSentenceLoop();
+            currentSentenceIndex = -1;
+
+            const niceTitle = formatDisplayTitle(track.title);
+            document.getElementById('appTitle').innerText = niceTitle;
+
+            const currentRate = media.playbackRate || 1.0;
+            media.src = track.mp3Url;
+            media.playbackRate = currentRate;
+            btnDownloadMp3.href = track.mp3Url;
+            btnDownloadMp3.setAttribute('download', track.mp3Name || (niceTitle + '.mp3'));
+
+            if (track.srtText) {
+                processSRT(track.srtText);
+                updateMainSubtitle(`Đã chọn: ${niceTitle}<br>Bấm Play hoặc chọn câu bên dưới để nghe.`, "", "");
+            } else if (track.srtUrl) {
+                try {
+                    const res = await fetch(track.srtUrl, { cache: 'no-cache' });
+                    if (res.ok) {
+                        track.srtText = await res.text();
+                        processSRT(track.srtText);
+                        updateMainSubtitle(`Đã chọn: ${niceTitle}<br>Bấm Play hoặc chọn câu bên dưới để nghe.`, "", "");
+                    } else {
+                        updateMainSubtitle(`Không tải được phụ đề (${res.status}).`, "", "");
+                    }
+                } catch (e) {
+                    updateMainSubtitle("Không tải được file phụ đề của bài này.", "", "");
+                }
+            }
+        }
+
+        // Quét từ danh sách file bất kỳ và ghép cặp tất cả các file .mp3 + (.srt hoặc .txt) trùng tên
+        function matchMp3AndSubPairs(fileNamesList) {
+            const mp3Files = [];
+            const subMap = new Map();
+
+            fileNamesList.forEach(name => {
+                if (!name) return;
+                const lower = name.toLowerCase();
+                // Bỏ qua file từ điển IPA.txt dùng chung
+                if (lower === 'ipa.txt') return;
+
+                const key = normalizeFileKey(name);
+                if (lower.endsWith('.mp3')) {
+                    mp3Files.push({ name, key });
+                } else if (lower.endsWith('.srt') || lower.endsWith('.txt')) {
+                    // Ưu tiên .srt nếu có cả .srt và .txt trùng tên
+                    if (!subMap.has(key) || lower.endsWith('.srt')) {
+                        subMap.set(key, name);
+                    }
+                }
+            });
+
+            const matched = [];
+            for (const m of mp3Files) {
+                let subName = subMap.get(m.key);
+                // Nếu trong thư mục chỉ có duy nhất 1 file mp3 và 1 file phụ đề khác tên
+                if (!subName && mp3Files.length === 1 && subMap.size === 1) {
+                    subName = Array.from(subMap.values())[0];
+                }
+                if (subName) {
+                    matched.push({
+                        title: getBaseName(m.name).normalize('NFC'),
+                        mp3Url: `./${encodeURIComponent(m.name)}`,
+                        mp3Name: m.name,
+                        srtUrl: `./${encodeURIComponent(subName)}`
+                    });
+                }
+            }
+
+            matched.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
+            return matched;
+        }
+
+        // Quét tự động toàn bộ thư mục trên GitHub Pages hoặc Web Server (Không dùng danh sách tên file cố định)
+        async function discoverServerTracks() {
+            // 1. Nếu chạy trên GitHub Pages (*.github.io), dùng GitHub API quét toàn bộ file trong thư mục
+            if (window.location.hostname.endsWith('github.io')) {
+                try {
+                    const owner = window.location.hostname.split('.')[0];
+                    const pathParts = window.location.pathname.split('/').filter(Boolean);
+                    if (pathParts.length >= 1) {
+                        const repo = pathParts[0];
+                        const subDir = pathParts.slice(1).filter(p => !p.toLowerCase().endsWith('.html')).join('/');
+                        const apiUrl = subDir
+                            ? `https://api.github.com/repos/${owner}/${repo}/contents/${subDir}?t=${Date.now()}`
+                            : `https://api.github.com/repos/${owner}/${repo}/contents?t=${Date.now()}`;
+
+                        const res = await fetch(apiUrl, { cache: 'no-store' });
+                        if (res.ok) {
+                            const items = await res.json();
+                            if (Array.isArray(items)) {
+                                const allFileNames = items.map(i => i.name).filter(Boolean);
+                                const tracks = matchMp3AndSubPairs(allFileNames);
+                                if (tracks.length > 0) return tracks;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("Lỗi khi quét GitHub API:", e);
+                }
+            }
+
+            // 2. Nếu chạy trên Local Server có bật Directory Listing, quét các thẻ link trong thư mục
+            try {
+                const res = await fetch('./', { cache: 'no-store' });
+                if (res.ok) {
+                    const html = await res.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = Array.from(doc.querySelectorAll('a'))
+                        .map(a => decodeURIComponent((a.getAttribute('href') || '').split('/').pop().split('?')[0]))
+                        .filter(Boolean);
+                    const tracks = matchMp3AndSubPairs(links);
+                    if (tracks.length > 0) return tracks;
+                }
+            } catch (e) {}
+
+            return [];
+        }
+
+        async function handleBatchFiles(fileList) {
+            if (!fileList || fileList.length === 0) return;
+            const files = Array.from(fileList);
+
+            const ipaFile = files.find(f => f.name.toLowerCase() === 'ipa.txt');
+            if (ipaFile) {
+                parseIPAData(await ipaFile.text());
+            }
+
+            const mp3Map = new Map();
+            const srtMap = new Map();
+
+            for (const f of files) {
+                const lower = f.name.toLowerCase();
+                if (lower === 'ipa.txt') continue;
+                const baseKey = normalizeFileKey(f.name);
+                if (lower.endsWith('.mp3')) {
+                    mp3Map.set(baseKey, f);
+                } else if (lower.endsWith('.srt') || lower.endsWith('.txt')) {
+                    if (!srtMap.has(baseKey) || lower.endsWith('.srt')) {
+                        srtMap.set(baseKey, f);
+                    }
+                }
+            }
+
+            const newTracks = [];
+            for (const [baseKey, mp3File] of mp3Map.entries()) {
+                let srtFile = srtMap.get(baseKey);
+                if (!srtFile && mp3Map.size === 1 && srtMap.size === 1) {
+                    srtFile = Array.from(srtMap.values())[0];
+                }
+                if (srtFile) {
+                    const srtText = await srtFile.text();
+                    newTracks.push({
+                        title: getBaseName(mp3File.name).normalize('NFC'),
+                        mp3Url: URL.createObjectURL(mp3File),
+                        mp3Name: mp3File.name,
+                        srtText: srtText
+                    });
+                }
+            }
+
+            newTracks.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
+
+            if (newTracks.length > 0) {
+                availableTracks = newTracks;
+                renderTrackSelector();
+                trackSelector.value = "0";
+                await handleTrackChange("0");
+                localLoadStatus.innerText = `✅ Đã tìm thấy ${newTracks.length} cặp bài nghe!`;
+            } else {
+                localLoadStatus.innerText = `⚠️ Không tìm thấy cặp file .mp3 và .srt/.txt nào cùng tên!`;
+            }
+        }
+
+        async function initApp() {
+            // Đăng ký Service Worker (sw.js) để chạy Offline và tự động cập nhật bản mới
+            if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+                try {
+                    await navigator.serviceWorker.register('./sw.js');
+                } catch (e) {
+                    console.log('Lỗi đăng ký Offline:', e);
+                }
+            }
+
+            loadSavedFontSizeSettings();
+            loadSavedFontSizeSettings();
+
+            const onPC = isRunningOnPC();
+            if (onPC) {
+                btnToggleLocal.style.display = 'inline-block';
+                if (window.location.protocol === 'file:') {
+                    localFallback.style.display = 'block';
+                }
+            }
+
+            const folderInput = document.getElementById('folderUpload');
+            if (folderInput) {
+                folderInput.addEventListener('change', e => handleBatchFiles(e.target.files));
+            }
+            const dropZone = document.getElementById('dropZone');
+            if (dropZone) {
+                dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.backgroundColor = '#e3f2fd'; });
+                dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.style.backgroundColor = '#fff'; });
+                dropZone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    dropZone.style.backgroundColor = '#fff';
+                    handleBatchFiles(e.dataTransfer.files);
+                });
+            }
+
+            // 1. Nạp file IPA.txt dùng chung cho mọi bài
+            try {
+                const ipaRes = await fetch('./IPA.txt', { cache: 'no-cache' });
+                if (ipaRes.ok) parseIPAData(await ipaRes.text());
+            } catch (e) {}
+
+            // 2. Tự động quét tất cả các cặp file MP3 & SRT/TXT cùng tên trong thư mục
+            const tracks = await discoverServerTracks();
+            if (tracks.length > 0) {
+                availableTracks = tracks;
+                renderTrackSelector();
+                trackSelector.value = "0";
+                await handleTrackChange("0");
+            } else {
+                renderTrackSelector();
+                updateMainSubtitle("Chưa tìm thấy cặp file .mp3 và .srt/.txt cùng tên trong thư mục.", "", "");
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else { initApp(); }
+
+        function processSRT(data) {
+            const blocks = data.replace(/\r/g, '').trim().split(/\n\s*\n/);
+            const parsedData = [];
+            blocks.forEach(block => {
+                const lines = block.split('\n');
+                if (lines.length >= 2) {
+                    const timeLineIdx = lines.findIndex(l => l.includes('-->'));
+                    if (timeLineIdx !== -1) {
+                        const timeMatch = lines[timeLineIdx].match(/(\d{2}:\d{2}:\d{2}(?:[,.]\d{1,3})?)\s*-->\s*(\d{2}:\d{2}:\d{2}(?:[,.]\d{1,3})?)/);
+                        if (timeMatch) {
+                            const fullText = lines.slice(timeLineIdx + 1).join(' ').replace(/<[^>]*>?/gm, '').trim();
+                            let engPart = fullText;
+                            let vnPart = "";
+                            if (fullText.includes('|')) {
+                                const parts = fullText.split('|');
+                                engPart = parts[0].trim();
+                                vnPart = parts.slice(1).join('|').trim();
+                            }
+                            parsedData.push({
+                                start: timeToSeconds(timeMatch[1]),
+                                end: timeToSeconds(timeMatch[2]),
+                                text: engPart,
+                                vnText: vnPart,
+                                ipa: convertSentenceToIPA(engPart)
+                            });
+                        }
+                    }
+                }
+            });
+            sentences = parsedData;
+            renderSentencesList();
+        }
+
+        function timeToSeconds(timeStr) {
+            const parts = timeStr.replace(',', '.').split(':');
+            return (parseFloat(parts[0]) * 3600) + (parseFloat(parts[1]) * 60) + parseFloat(parts[2]);
+        }
+
+        function renderSentencesList() {
+            sentencesListDiv.innerHTML = '';
+            selectedSentences = [];
+            isSentenceLoopMode = false;
+            updateFabBadge();
+            
+            sentences.forEach((sentence, index) => {
+                const div = document.createElement('div');
+                div.className = 'sentence-item';
+                div.id = 'sentence-' + index;
+                
+                div.innerHTML = `
+                    <input type="checkbox" class="sentence-checkbox" id="chk-${index}">
+                    <div class="sentence-number">${index + 1}.</div>
+                    <div class="sentence-text">
+                        <div class="sentence-eng-line">${sentence.text}</div>
+                        <div class="sentence-ipa">/${sentence.ipa}/</div>
+                        <span class="time-badge">⏳ ${formatTime(sentence.start)} - ${formatTime(sentence.end)}</span>
+                    </div>
+                `;
+                
+                div.onclick = (e) => handleRowClick(index, e);
+                sentencesListDiv.appendChild(div);
+            });
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function updateFabBadge() {
+            if (selectedSentences.length > 0) {
+                fabBadge.style.display = 'flex';
+                fabBadge.innerText = selectedSentences.length;
+            } else { fabBadge.style.display = 'none'; }
+        }
+
+        function handleRowClick(index, event) {
+            const chk = document.getElementById('chk-' + index);
+            if (event.target.type !== 'checkbox') { chk.checked = !chk.checked; }
+            
+            const isChecked = chk.checked;
+            const idxInArr = selectedSentences.indexOf(index);
+            
+            if (isChecked && idxInArr === -1) {
+                selectedSentences.push(index);
+                document.getElementById('sentence-' + index).classList.add('selected');
+            } else if (!isChecked && idxInArr !== -1) {
+                selectedSentences.splice(idxInArr, 1);
+                document.getElementById('sentence-' + index).classList.remove('selected');
+            }
+            
+            selectedSentences.sort((a, b) => a - b);
+            updateFabBadge();
+
+            if (sentences[index]) {
+                currentSentenceIndex = index;
+                updateMainSubtitle(sentences[index].text, sentences[index].ipa, sentences[index].vnText);
+                updateHighlight(index);
+            }
+            
+            if (isSentenceLoopMode && selectedSentences.length === 0) { stopSentenceLoop(); }
+        }
+
+        function formatSelectedToRangeString() {
+            if (selectedSentences.length === 0) return "";
+            if (sentences.length > 0 && selectedSentences.length === sentences.length) return "*";
+            let sorted = [...selectedSentences].sort((a, b) => a - b).map(i => i + 1);
+            let parts = []; let start = sorted[0], prev = sorted[0];
+            for (let i = 1; i < sorted.length; i++) {
+                if (sorted[i] === prev + 1) { prev = sorted[i]; } 
+                else { parts.push(start === prev ? `${start}` : `${start}-${prev}`); start = prev = sorted[i]; }
+            }
+            parts.push(start === prev ? `${start}` : `${start}-${prev}`);
+            return parts.join(',');
+        }
+
+        function openRangeModal() {
+            totalSentenceHint.innerText = sentences.length > 0 ? `(Tổng: ${sentences.length} câu)` : '';
+            rangeInput.value = formatSelectedToRangeString();
+            rangeModalOverlay.style.display = 'flex';
+            if (document.getElementById('modalSectionRange').style.display !== 'none') {
+                setTimeout(() => { rangeInput.focus(); rangeInput.select(); }, 50);
+            }
+        }
+
+        function closeRangeModal() { rangeModalOverlay.style.display = 'none'; rangeInput.blur(); }
+        function handleOverlayClick(e) { if (e.target === rangeModalOverlay) closeRangeModal(); }
+
+        function insertQuickChar(ch) {
+            if (ch === '*') { rangeInput.value = '*'; } 
+            else {
+                const startPos = rangeInput.selectionStart || rangeInput.value.length;
+                const endPos = rangeInput.selectionEnd || rangeInput.value.length;
+                const val = rangeInput.value;
+                rangeInput.value = val.substring(0, startPos) + ch + val.substring(endPos);
+                rangeInput.selectionStart = rangeInput.selectionEnd = startPos + ch.length;
+            }
+            rangeInput.focus();
+        }
+
+        function clearRangeInput() { rangeInput.value = ''; rangeInput.focus(); }
+
+        rangeInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); applyRangeSelection(false); }
+        });
+
+        function parseRangeString(inputStr, maxCount) {
+            const raw = inputStr.trim();
+            if (!raw) return [];
+            if (raw.includes('*') || raw.includes('#')) {
+                const all = []; for (let i = 0; i < maxCount; i++) all.push(i); return all;
+            }
+            const resultSet = new Set();
+            const tokens = raw.split(/[,;.\s]+/);
+            tokens.forEach(token => {
+                if (!token) return;
+                if (token.includes('-')) {
+                    const rangeParts = token.split('-').map(p => parseInt(p.trim(), 10));
+                    if (rangeParts.length >= 2 && !isNaN(rangeParts[0]) && !isNaN(rangeParts[1])) {
+                        const startNum = Math.max(1, Math.min(rangeParts[0], rangeParts[1]));
+                        const endNum = Math.min(maxCount, Math.max(rangeParts[0], rangeParts[1]));
+                        for (let n = startNum; n <= endNum; n++) resultSet.add(n - 1);
+                    }
+                } else {
+                    const num = parseInt(token, 10);
+                    if (!isNaN(num) && num >= 1 && num <= maxCount) resultSet.add(num - 1);
+                }
+            });
+            return Array.from(resultSet).sort((a, b) => a - b);
+        }
+
+        function applyRangeSelection(startLoopImmediately) {
+            if (sentences.length === 0) {
+                alert("Chưa có dữ liệu câu phụ đề!");
+                return;
+            }
+            const indices = parseRangeString(rangeInput.value, sentences.length);
+            selectedSentences = [];
+            document.querySelectorAll('.sentence-item').forEach(item => {
+                item.classList.remove('selected');
+                const chk = item.querySelector('input[type="checkbox"]');
+                if (chk) chk.checked = false;
+            });
+            selectedSentences = indices;
+            selectedSentences.forEach(idx => {
+                const itemEl = document.getElementById('sentence-' + idx);
+                const chkEl = document.getElementById('chk-' + idx);
+                if (itemEl) itemEl.classList.add('selected');
+                if (chkEl) chkEl.checked = true;
+            });
+            updateFabBadge();
+            closeRangeModal();
+
+            if (selectedSentences.length > 0) {
+                const firstEl = document.getElementById('sentence-' + selectedSentences[0]);
+                if (firstEl) {
+                    const container = document.getElementById('sentencesList');
+                    container.scrollTop = firstEl.offsetTop - container.offsetTop - 20;
+                }
+            }
+
+            if (startLoopImmediately) {
+                if (selectedSentences.length > 0) {
+                    if (isABLoopMode) resetAB();
+                    isSentenceLoopMode = true;
+                    const btn = document.getElementById('btnToggleLoop');
+                    btn.classList.add('active');
+                    btn.innerText = "🛑 Đang lặp (Bấm để Dừng)";
+                    media.currentTime = sentences[selectedSentences[0]].start;
+                    media.play();
+                } else { stopSentenceLoop(); }
+            } else if (isSentenceLoopMode && selectedSentences.length === 0) { stopSentenceLoop(); }
+        }
+
+        function toggleSentenceLoop() {
+            if (isSentenceLoopMode) { stopSentenceLoop(); } 
+            else {
+                if (selectedSentences.length === 0) { alert("Vui lòng tích chọn ít nhất 1 câu!"); return; }
+                if (isABLoopMode) resetAB();
+                isSentenceLoopMode = true;
+                const btn = document.getElementById('btnToggleLoop');
+                btn.classList.add('active');
+                btn.innerText = "🛑 Đang lặp (Bấm để Dừng)";
+                media.currentTime = sentences[selectedSentences[0]].start;
+                media.play();
+            }
+        }
+
+        function stopSentenceLoop() {
+            isSentenceLoopMode = false;
+            const btn = document.getElementById('btnToggleLoop');
+            btn.classList.remove('active');
+            btn.innerText = "🔄 Bắt đầu lặp";
+        }
+
+        function clearSelection() {
+            selectedSentences = [];
+            document.querySelectorAll('.sentence-item').forEach(item => {
+                item.classList.remove('selected');
+                const chk = item.querySelector('input[type="checkbox"]');
+                if (chk) chk.checked = false;
+            });
+            updateFabBadge();
+            if (isSentenceLoopMode) stopSentenceLoop();
+        }
+
+        media.addEventListener('timeupdate', () => {
+            const currentTime = media.currentTime;
+            
+            if (isSentenceLoopMode && selectedSentences.length > 0) {
+                let blocks = getAllContinuousBlocks();
+                let currentBlock = null;
+                let currentBlockIdx = -1;
+                for (let i = 0; i < blocks.length; i++) {
+                    let b = blocks[i];
+                    if (currentTime >= b.start - 0.3 && currentTime <= b.end + 0.05) {
+                        currentBlock = b;
+                        currentBlockIdx = i;
+                        break;
+                    }
+                }
+                if (!currentBlock) {
+                    let nextBlock = blocks.find(b => b.start > currentTime);
+                    media.currentTime = nextBlock ? nextBlock.start : blocks[0].start;
+                    media.play();
+                    return;
+                }
+
+                let foundIdx = -1;
+                for (let idx of currentBlock.indices) {
+                    if (currentTime >= sentences[idx].start && currentTime <= sentences[idx].end) {
+                        foundIdx = idx;
+                        break;
+                    }
+                }
+                if (foundIdx === -1) {
+                    for (let k = currentBlock.indices.length - 1; k >= 0; k--) {
+                        let candidateIdx = currentBlock.indices[k];
+                        if (currentTime >= sentences[candidateIdx].start) {
+                            foundIdx = candidateIdx;
+                            break;
+                        }
+                    }
+                    if (foundIdx === -1) {
+                        foundIdx = currentBlock.indices[0];
+                    }
+                }
+
+                if (currentSentenceIndex !== foundIdx) {
+                    currentSentenceIndex = foundIdx;
+                    updateMainSubtitle(sentences[foundIdx].text, sentences[foundIdx].ipa, sentences[foundIdx].vnText);
+                    updateHighlight(foundIdx);
+                }
+
+                if (currentTime >= currentBlock.end - 0.05) {
+                    media.currentTime = (currentBlockIdx < blocks.length - 1) ? blocks[currentBlockIdx + 1].start : blocks[0].start;
+                    media.play();
+                }
+                return; 
+            }
+
+            if (isABLoopMode && abState === 2 && currentTime >= loopB) { media.currentTime = loopA; }
+            
+            let foundIndex = -1;
+            for (let i = 0; i < sentences.length; i++) {
+                if (currentTime >= sentences[i].start && currentTime <= sentences[i].end) { foundIndex = i; break; }
+            }
+
+            if (foundIndex !== -1) {
+                if (currentSentenceIndex !== foundIndex) {
+                    currentSentenceIndex = foundIndex;
+                    updateMainSubtitle(sentences[foundIndex].text, sentences[foundIndex].ipa, sentences[foundIndex].vnText);
+                    updateHighlight(foundIndex);
+                }
+            } else {
+                if (!media.paused && !isSentenceLoopMode) {
+                    updateMainSubtitle("♪ ♪ ♪", "", "");
+                    updateHighlight(-1);
+                }
+            }
+        });
+
+        function getAllContinuousBlocks() {
+            if (selectedSentences.length === 0) return [];
+            let sortedSelected = [...selectedSentences].sort((a, b) => a - b);
+            let blocks = [];
+            let currentBlock = {
+                start: sentences[sortedSelected[0]].start,
+                end: sentences[sortedSelected[0]].end,
+                indices: [sortedSelected[0]]
+            };
+            for (let i = 1; i < sortedSelected.length; i++) {
+                let prevIdx = sortedSelected[i - 1];
+                let currIdx = sortedSelected[i];
+                if (currIdx === prevIdx + 1) {
+                    currentBlock.end = sentences[currIdx].end;
+                    currentBlock.indices.push(currIdx);
+                } else {
+                    blocks.push(currentBlock);
+                    currentBlock = {
+                        start: sentences[currIdx].start,
+                        end: sentences[currIdx].end,
+                        indices: [currIdx]
+                    };
+                }
+            }
+            blocks.push(currentBlock);
+            return blocks;
+        }
+
+        function updateHighlight(index) {
+            document.querySelectorAll('.sentence-item').forEach(item => item.classList.remove('current'));
+            if (index !== -1) {
+                const el = document.getElementById('sentence-' + index);
+                if (el) {
+                    el.classList.add('current');
+                    if(!media.paused) {
+                        const container = document.getElementById('sentencesList');
+                        container.scrollTop = el.offsetTop - container.offsetTop - (container.clientHeight / 2) + (el.clientHeight / 2);
+                    }
+                }
+            }
+        }
+
+        function handleABClick() {
+            const btn = document.getElementById('btnAB');
+            if (abState === 0) {
+                loopA = media.currentTime; abState = 1;
+                btn.innerText = `[ A-B ] (${formatTime(loopA)}) - Bấm lấy B`;
+                btn.style.backgroundColor = "#ffc107"; btn.style.color = "#000";
+            } else if (abState === 1) {
+                loopB = media.currentTime;
+                if (loopB > loopA) {
+                    abState = 2; isABLoopMode = true;
+                    btn.innerText = `[ A-B ] Lặp: ${formatTime(loopA)} ⟷ ${formatTime(loopB)} (Tắt)`;
+                    btn.style.backgroundColor = "#28a745"; btn.style.color = "#fff";
+                    if (isSentenceLoopMode) stopSentenceLoop();
+                } else { alert("Mốc B phải sau mốc A!"); resetAB(); }
+            } else { resetAB(); }
+        }
+
+        function resetAB() {
+            abState = 0; isABLoopMode = false;
+            const btn = document.getElementById('btnAB');
+            btn.innerText = "[ A-B ] Bấm vào đây để đặt mốc A";
+            btn.style.backgroundColor = "#007bff"; btn.style.color = "#fff";
+        }
+    </script>
+</body>
+</html>
