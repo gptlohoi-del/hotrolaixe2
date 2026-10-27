@@ -62,8 +62,8 @@
           <span class="calibration-heading">◎ TỰ CÂN BẰNG</span><small id="calibrate-subtext">Đang chờ cảm biến…</small>
         </div>
       </div>
-
-      <section class="fusion-card card" aria-label="Cốc nước lực G và các thông số lái xe">
+      <section class="telemetry-panel card" aria-label="Khối theo dõi tổng hợp">
+      <section aria-label="Cốc nước lực G và các thông số lái xe">
         <div class="fusion-head">
           <div><span class="eyebrow">ĐỘ ÊM ÁI VÀ LỰC G</span><p id="drive-summary" class="fusion-subtitle">Sẵn sàng đo khi ghi chuyến đi</p></div>
           <div class="fusion-score"><span>ĐIỂM LÁI ÊM</span><strong id="drive-score">--</strong><small>Vượt ngưỡng <b id="drive-violations">0</b> lần</small></div>
@@ -90,42 +90,42 @@
         </div>
       </section>
 
-      <section class="memory-strip card" aria-label="Bộ nhớ chất lượng mặt đường">
+      <section aria-label="Bộ nhớ chất lượng mặt đường">
         <div class="memory-header"><strong>📍 BỘ NHỚ MẶT ĐƯỜNG</strong><span>Dùng lại ở các chuyến sau</span></div>
         <div class="memory-stats"><span><b id="road-memory-count">…</b> điểm đã học</span><span><b id="road-memory-confirmed">…</b> điểm lặp lại nhiều chuyến</span></div>
         <small>Chỉ ghi điểm khi lực xóc và GPS đủ điều kiện. Khoảng cách và cảnh báo đều là ước tính.</small>
       </section>
 
       <section class="metrics" aria-label="Chỉ số theo dõi">
-        <div class="metric card">
+        <div class="metric">
           <span class="metric-label">ĐỘ XÓC ƯỚC TÍNH</span>
           <div class="metric-value"><strong id="vibration-score">--</strong><span>g</span></div>
           <span id="sensor-state" class="metric-hint">Chưa có cảm biến</span>
         </div>
-        <div class="metric card">
+        <div class="metric">
           <span class="metric-label">BÁN KÍNH CUA</span>
           <div class="metric-value"><strong id="curve-radius">--</strong><span>m</span></div>
           <span class="metric-hint">Ước tính từ GPS</span>
         </div>
-        <div class="metric card">
+        <div class="metric">
           <span class="metric-label">ĐIỂM XÓC PHÍA TRƯỚC</span>
           <div class="metric-value"><strong id="countdown-value">--</strong><span>m</span></div>
           <span class="metric-hint">Từ lịch sử đã lưu</span>
         </div>
-        <div class="metric card">
+        <div class="metric">
           <span class="metric-label">QUÃNG ĐƯỜNG GHI</span>
           <div class="metric-value"><strong id="trip-distance">0.00</strong><span>km</span></div>
           <span id="trip-count" class="metric-hint">Chưa ghi hành trình</span>
         </div>
       </section>
 
-      <section id="alert-panel" class="notice card" role="status" aria-live="polite">
+      <section id="alert-panel" class="notice" role="status" aria-live="polite">
         <div class="notice-icon" aria-hidden="true">ⓘ</div>
         <div class="notice-copy">
           <strong id="alert-title">Sẵn sàng khởi động</strong>
           <span id="alert-detail">Chạm GPS để kiểm tra quyền truy cập vị trí.</span>
         </div>
-      </section>
+      </section></section>
 
       <p class="safety-note">⚠ Chỉ hỗ trợ tham khảo; không thay thế biển báo và quan sát thực tế. Gắn chặt điện thoại, không thao tác khi đang lái.</p>
     </main>
