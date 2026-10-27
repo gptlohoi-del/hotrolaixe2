@@ -662,3 +662,122 @@ legend { color:var(--accent); font-weight:800; font-size:13px; padding:0 7px; }
 .telemetry-panel .fusion-main{
   gap:10px;
 }
+
+/* ===== SỬA ONE VIEW SAU KHI GỘP 4 KHU VỰC =====
+ * Dashboard bây giờ chỉ có 4 phần trực tiếp: phân tích, nút, telemetry, lưu ý.
+ * Phần telemetry nằm trên hàng có thể co giãn, không bị cắt như trước.
+ */
+.dashboard,
+.dashboard.expanded-zoom {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows:
+    clamp(112px, 19vh, 165px)
+    clamp(48px, 7.5vh, 70px)
+    minmax(0, 1fr)
+    auto !important;
+  overflow: hidden !important;
+}
+.dashboard > .telemetry-panel {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-content: stretch;
+  gap: clamp(3px, .65vh, 6px);
+  padding: clamp(4px, .7vh, 7px);
+  overflow: hidden;
+}
+.telemetry-panel > .fusion-card,
+.telemetry-panel > .memory-strip,
+.telemetry-panel > .metrics,
+.telemetry-panel > .notice {
+  min-width:0;
+  min-height:0;
+  margin:0;
+  grid-column:auto !important;
+  grid-row:auto !important;
+  border-radius:9px;
+  box-shadow:none;
+  overflow:hidden;
+}
+.telemetry-panel > .fusion-card {
+  padding:6px 8px;
+  background:rgba(14, 165, 233, .065);
+  border:1px solid rgba(14, 165, 233, .23);
+}
+.telemetry-panel > .memory-strip {
+  padding:5px 8px;
+  background:rgba(22, 163, 74, .07);
+  border:1px solid rgba(22, 163, 74, .22);
+}
+.telemetry-panel > .metrics {
+  display:grid;
+  padding:5px;
+  gap:4px;
+  background:rgba(139, 92, 246, .07);
+  border:1px solid rgba(139, 92, 246, .20);
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:repeat(2,minmax(0,1fr));
+}
+.telemetry-panel .metric {
+  min-width:0;
+  min-height:0;
+  border-radius:7px;
+  padding:3px 7px;
+  border:1px solid rgba(139, 92, 246, .13);
+  background:rgba(139, 92, 246, .045);
+}
+.telemetry-panel > .notice {
+  padding:5px 8px;
+  background:rgba(245, 158, 11, .07);
+  border:1px solid rgba(245, 158, 11, .23);
+}
+.telemetry-panel .fusion-head {margin-bottom:3px;padding-bottom:3px}
+.telemetry-panel .fusion-main {gap:6px}
+.telemetry-panel .fusion-cup {width:min(28vw,14vh,126px);height:auto;aspect-ratio:1}
+.telemetry-panel .fusion-bars {gap:3px}
+.telemetry-panel .fusion-track {height:5px}
+.telemetry-panel .fusion-bar-top {margin-bottom:1px;font-size:10px}
+.telemetry-panel .fusion-extra {padding-top:3px;font-size:9px}
+.telemetry-panel .memory-header {font-size:10px}
+.telemetry-panel .memory-stats {margin:2px 0}
+.telemetry-panel .memory-stats span {font-size:10px}
+.telemetry-panel .memory-stats b {font-size:14px}
+.telemetry-panel .metric-value strong {font-size:clamp(17px,3.5vh,28px)}
+.telemetry-panel .metric-label {font-size:clamp(8px,1.35vh,10px)}
+.telemetry-panel .notice-icon {width:26px;height:26px;font-size:15px}
+.telemetry-panel .notice-copy strong {font-size:clamp(10px,1.55vh,13px)}
+.telemetry-panel .notice-copy span {font-size:clamp(9px,1.3vh,11px)}
+/* Màn hình thấp: ưu tiên các số đo, giữ cảnh báo luôn thấy */
+@media (max-height:650px) and (orientation:portrait) {
+  .dashboard, .dashboard.expanded-zoom {
+    grid-template-rows: minmax(100px, 22vh) minmax(45px, 8vh) minmax(0,1fr) auto !important;
+  }
+  .telemetry-panel > .fusion-card {padding:3px 6px}
+  .telemetry-panel .fusion-cup {width:min(25vw,12vh,95px)}
+  .telemetry-panel .fusion-head {margin:0 0 2px;padding-bottom:2px}
+  .telemetry-panel .fusion-score strong {font-size:20px}
+  .telemetry-panel .fusion-bars {gap:2px}
+  .telemetry-panel .fusion-bar-top {font-size:9px}
+  .telemetry-panel .fusion-extra {display:none}
+  .telemetry-panel .metric-hint {display:none}
+  .telemetry-panel .drive-weaving {display:none}
+  .telemetry-panel .notice-copy span {display:none}
+}
+@media (min-width:750px) {
+  .dashboard, .dashboard.expanded-zoom {
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+    grid-template-rows:minmax(0,1fr) clamp(55px,9vh,90px) auto !important;
+  }
+  .dashboard > .hero {grid-area:1 / 1 !important}
+  .dashboard > .buttons-row {grid-area:2 / 1 !important}
+  .dashboard > .telemetry-panel {grid-area:1 / 2 / 3 / 3 !important}
+  .dashboard > .safety-note {grid-area:3 / 1 / 4 / 3 !important}
+  .telemetry-panel .fusion-cup {width:min(14vw,20vh,170px)}
+}
+
+/* Không để dòng mô tả phụ bị cắt nửa trên điện thoại thấp. */
+@media (max-width:420px) and (max-height:750px) {
+  .telemetry-panel .metric-hint { display:none!important; }
+}
