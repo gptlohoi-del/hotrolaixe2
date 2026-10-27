@@ -292,13 +292,7 @@ legend { color:var(--accent); font-weight:800; font-size:13px; padding:0 7px; }
 .hero.has-custom-color .mode-option { background:var(--hero-mode-bg); border-color:var(--hero-line); color:var(--hero-text); }
 .hero.has-custom-color .mode-option[aria-pressed="true"] { background:var(--hero-highlight); border-color:var(--hero-highlight); color:var(--hero-mode-active-text); }
 
-/* DriveFusion: deliberately scrollable. Sensors + speed + memory are visible in one app. */
-.dashboard, .dashboard.expanded-zoom {display:flex!important;flex-direction:column!important;gap:10px!important;max-width:950px;overflow-y:auto!important;overflow-x:hidden!important;min-height:0!important;align-items:stretch;scrollbar-width:thin;padding-bottom:18px!important;}
-.dashboard > * {flex-shrink:0;grid-area:auto!important;}
-.dashboard .hero{min-height:170px!important;}
-.dashboard .metrics{min-height:174px!important;grid-template-rows:repeat(2,minmax(82px,1fr));}
-.dashboard .notice{min-height:68px!important;}
-.dashboard .buttons-row{min-height:72px!important;}
+
 .brand-suffix{font-size:.63em;letter-spacing:.02em;opacity:.72;font-weight:600;}
 .fusion-card{padding:12px 14px;}
 .fusion-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:9px;}
@@ -338,3 +332,263 @@ legend { color:var(--accent); font-weight:800; font-size:13px; padding:0 7px; }
 .dashboard .safety-note{font-size:11px;line-height:1.45;min-height:0;margin-bottom:0;white-space:normal;}
 @media (max-width:365px){.fusion-card{padding:9px}.fusion-main{gap:8px;grid-template-columns:135px minmax(130px,1fr)}.fusion-cup{width:132px;height:132px}.fusion-bar-top{font-size:10px}.fusion-head .eyebrow{font-size:10px}.fusion-score strong{font-size:27px}}
 @media (min-width:760px){.dashboard{width:min(95vw,950px)}.dashboard .hero{min-height:165px!important}.fusion-main{grid-template-columns:200px 1fr}.fusion-cup{width:185px;height:185px}}
+
+/* ===== DRIVEFUSION ONE VIEW ===== */
+
+.dashboard,
+.dashboard.expanded-zoom {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows:
+    minmax(0, 1.05fr)
+    minmax(0, .40fr)
+    minmax(0, 1.55fr)
+    minmax(0, .52fr)
+    minmax(0, 1.05fr)
+    minmax(0, .43fr)
+    auto !important;
+  gap: clamp(3px, .7vh, 6px) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: clamp(4px, .75vh, 8px) 8px !important;
+}
+
+.dashboard > * {
+  min-height: 0 !important;
+  grid-area: auto !important;
+}
+
+/* Khung tốc độ */
+.dashboard .hero,
+.dashboard.expanded-zoom .hero {
+  min-height: 0 !important;
+  padding: 5px 9px;
+}
+
+.dashboard .speed-number strong {
+  font-size: min(var(--rec-speed-font), 7.5vh, 15vw) !important;
+}
+.dashboard .actual-speed .speed-number strong {
+  font-size: min(var(--gps-speed-font), 7.5vh, 15vw) !important;
+}
+
+/* Bắt đầu và cân chỉnh */
+.dashboard .buttons-row,
+.dashboard.expanded-zoom .buttons-row {
+  min-height: 0 !important;
+}
+.dashboard .action-btn {
+  min-height: 0;
+  padding: 2px 3px;
+}
+.dashboard .action-btn small,
+.dashboard .calibration-state small {
+  font-size: 9px;
+  line-height: 1.05;
+  margin-top: 1px;
+}
+.dashboard .calibration-state {
+  padding: 2px;
+}
+.dashboard .calibration-heading {
+  font-size: 10px;
+  line-height: 1.05;
+}
+
+/* Cốc nước G-Force */
+.fusion-card {
+  min-height: 0 !important;
+  overflow: hidden;
+  padding: 5px 8px;
+}
+.fusion-head {
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  gap: 6px;
+}
+.fusion-head .eyebrow {
+  font-size: 10px;
+}
+.fusion-subtitle {
+  display: none;
+}
+.fusion-score {
+  padding: 2px 6px;
+}
+.fusion-score strong {
+  font-size: 23px;
+}
+.fusion-score span,
+.fusion-score small {
+  font-size: 9px;
+}
+.fusion-main {
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: 6px;
+}
+.fusion-cup {
+  width: min(30vw, 17vh, 136px);
+  height: auto;
+  aspect-ratio: 1;
+  min-height: 0;
+}
+.cup-g {
+  font-size: 10px;
+}
+.drive-weaving {
+  font-size: 9px;
+  line-height: 1.1;
+}
+
+/* Các thanh lực G */
+.fusion-bars {
+  gap: clamp(2px, .55vh, 5px);
+}
+.fusion-bar-top {
+  margin-bottom: 2px;
+  font-size: clamp(9px, 1.35vh, 11px);
+}
+.fusion-bar-top strong {
+  font-size: 10px;
+}
+.fusion-track {
+  height: 5px;
+}
+.fusion-extra {
+  padding-top: 4px;
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+/* Bộ nhớ mặt đường */
+.memory-strip {
+  min-height: 0 !important;
+  padding: 4px 8px;
+  overflow: hidden;
+}
+.memory-header {
+  font-size: 10px;
+  gap: 4px;
+}
+.memory-header span {
+  font-size: 9px;
+}
+.memory-stats {
+  margin: 3px 0;
+  gap: 5px;
+}
+.memory-stats span {
+  font-size: 10px;
+}
+.memory-stats b {
+  font-size: 14px;
+}
+.memory-strip small {
+  display: none;
+}
+
+/* Bốn ô thông số */
+.dashboard .metrics,
+.dashboard.expanded-zoom .metrics {
+  min-height: 0 !important;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+.dashboard .metric {
+  padding: 3px 7px;
+}
+.dashboard .metric-value strong {
+  font-size: clamp(18px, 3.7vh, 30px);
+}
+.dashboard .metric-hint {
+  font-size: 9px;
+}
+
+/* Cảnh báo */
+.dashboard .notice,
+.dashboard.expanded-zoom .notice {
+  min-height: 0 !important;
+  padding: 3px 7px;
+}
+.dashboard .notice-icon {
+  width: 27px;
+  height: 27px;
+  font-size: 16px;
+}
+.dashboard .safety-note {
+  font-size: 9px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Điện thoại có màn hình thấp */
+@media (max-height: 700px) and (orientation: portrait) {
+  .dashboard .safety-note,
+  .dashboard .speed-context,
+  .dashboard .metric-hint {
+    display: none;
+  }
+  .fusion-card .fusion-cup {
+    width: min(28vw, 14.5vh, 110px);
+  }
+  .fusion-score small,
+  .fusion-extra {
+    display: none;
+  }
+  .fusion-head {
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+  }
+  .dashboard .action-btn small,
+  .dashboard .calibration-state small {
+    font-size: 8px;
+    line-height: 1;
+  }
+}
+
+/* Máy tính và màn hình rộng */
+@media (min-width: 750px) {
+  .dashboard,
+  .dashboard.expanded-zoom {
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+    grid-template-rows:
+      minmax(0,1.3fr)
+      minmax(0,.45fr)
+      minmax(0,1.15fr)
+      minmax(0,.55fr)
+      auto !important;
+  }
+  .dashboard .hero {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+  .dashboard .buttons-row {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+  .dashboard .metrics {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+  }
+  .dashboard .notice {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+  }
+  .dashboard .fusion-card {
+    grid-column: 2 !important;
+    grid-row: 1 / 4 !important;
+  }
+  .dashboard .memory-strip {
+    grid-column: 2 !important;
+    grid-row: 4 !important;
+  }
+  .dashboard .safety-note {
+    grid-column: 1 / -1 !important;
+    grid-row: 5 !important;
+  }
+  .fusion-cup {
+    width: min(19vw, 190px);
+  }
+}
