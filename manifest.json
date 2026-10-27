@@ -1,7 +1,7 @@
 {
   "id": "./index.html",
-  "name": "HTLX2",
-  "short_name": "RoadSense",
+  "name": "Hỗ trợ lái xe 2",
+  "short_name": "HTLX2",
   "description": "Theo dõi tốc độ GPS, lực G, đường xóc, ghi nhớ điểm xóc qua các chuyến đi và đồng bộ hành trình lên GitHub.",
   "lang": "vi",
   "start_url": "./index.html",
