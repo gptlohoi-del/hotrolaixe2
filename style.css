@@ -592,3 +592,73 @@ legend { color:var(--accent); font-weight:800; font-size:13px; padding:0 7px; }
     width: min(19vw, 190px);
   }
 }
+/* ===== GỘP KHỐI THÔNG TIN THÀNH 1 Ô ===== */
+.telemetry-panel{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:10px;
+  overflow:hidden;
+}
+
+.telemetry-panel > section,
+.telemetry-panel > .metrics{
+  border-radius:14px;
+  padding:10px 12px;
+}
+
+.telemetry-panel .fusion-card{
+  background:rgba(56, 189, 248, 0.08);   /* xanh cyan nhẹ */
+  border:1px solid rgba(56, 189, 248, 0.18);
+}
+
+.telemetry-panel .memory-strip{
+  background:rgba(34, 197, 94, 0.08);    /* xanh lá nhẹ */
+  border:1px solid rgba(34, 197, 94, 0.18);
+}
+
+.telemetry-panel .metrics{
+  background:rgba(168, 85, 247, 0.08);   /* tím nhẹ */
+  border:1px solid rgba(168, 85, 247, 0.18);
+  gap:6px;
+  padding:8px;
+}
+
+.telemetry-panel .metric{
+  background:rgba(255,255,255,0.55);
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+
+:root[data-theme="dark"] .telemetry-panel .metric{
+  background:rgba(255,255,255,0.03);
+}
+
+.telemetry-panel .notice{
+  background:rgba(251, 191, 36, 0.10);   /* vàng nhẹ */
+  border:1px solid rgba(251, 191, 36, 0.22);
+}
+
+/* giảm khoảng cách thừa bên trong */
+.telemetry-panel .fusion-card,
+.telemetry-panel .memory-strip,
+.telemetry-panel .notice{
+  margin:0;
+}
+
+.telemetry-panel .memory-stats{
+  margin:6px 0 0;
+}
+
+.telemetry-panel .notice{
+  padding:8px 10px;
+}
+
+.telemetry-panel .fusion-head{
+  margin-bottom:8px;
+  padding-bottom:6px;
+}
+
+.telemetry-panel .fusion-main{
+  gap:10px;
+}
